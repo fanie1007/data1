@@ -1,18 +1,12 @@
 
 import React, { useState } from 'react';
 import { 
-  Eye, 
   Zap, 
   BookOpen, 
   PlusCircle, 
-  TrendingUp, 
   Sparkles, 
-  RefreshCw,
-  Info,
   ChevronRight,
-  Loader2,
   CheckCircle2,
-  Download,
   Brain,
   Search,
   Timer,
@@ -25,15 +19,21 @@ import {
   X,
   ArrowRight,
   Copy,
-  Terminal,
-  FileText,
   MousePointer2,
-  Wand2,
   BarChart3,
-  PieChart,
-  LineChart,
-  DollarSign,
-  Briefcase
+  Briefcase,
+  Cpu,
+  Palette,
+  Settings2,
+  Presentation,
+  ExternalLink,
+  Github,
+  Rocket,
+  Globe,
+  Code2,
+  Cloud,
+  Layout,
+  RefreshCw
 } from 'lucide-react';
 
 interface VisualizationItem {
@@ -45,10 +45,108 @@ interface VisualizationItem {
   prompt: string;
 }
 
+const tutorialPrompts = [
+  {
+    category: "GA4 企業實踐",
+    prompts: [
+      {
+        title: "經營決策洞察",
+        description: "將 GA4 原始數據轉化為老闆能理解的商業價值與具體行動方案。",
+        content: "你是一位資深電子商務策略顧問。請檢視本月的 GA4 流量與轉化數據。請特別針對「高價值用戶來源」與「結帳流失點」進行深度分析，並提供三個具體的建議，以在下個月提升 10% 的整體營收。請用非技術性的語言進行匯報。"
+      },
+      {
+        title: "內容行銷成效",
+        description: "分析部落格或登陸頁面的真實價值，而不僅僅是瀏覽量。",
+        content: "請分析特定內容頁面的參與度數據。除了 Page Views 外，請著重於「關鍵活動觸發」與「後續轉換路徑」。判斷哪些內容主題真正帶動了潛在客戶的詢問，並據此規劃下個季度的內容日曆。"
+      },
+      {
+        title: "廣告投放優化",
+        description: "評估各個廣告管道的 ROI，並優化預算分配邏輯。",
+        content: "請對比 Google Ads 與社交媒體廣告的獲客成本 (CAC) 與用戶終身價值 (LTV)。分析在多路徑歸因模型下，哪個管道在輔助轉換中扮演關鍵角色。請提供下週預算調整的具體比例建議，以最大化轉化效率。"
+      }
+    ]
+  }
+];
+
 const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tutorial'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'tutorial' | 'ecosystem' | 'deployment'>('dashboard');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [selectedConcept, setSelectedConcept] = useState<VisualizationItem | null>(null);
+
+  const softwareEcosystem = [
+    {
+      name: "Gemini",
+      role: "大腦與筆桿",
+      icon: <Brain className="w-8 h-8 text-blue-500" />,
+      desc: "負責深度數據分析、洞察提取與專業文案撰寫，是整個流程的智慧核心。",
+      features: ["自然語言數據提問", "精準提示詞工程 (Prompt Engineering)", "自動生成數據故事敘述"],
+      link: "https://aistudio.google.com/",
+      color: "border-blue-200 bg-blue-50"
+    },
+    {
+      name: "Looker Studio",
+      role: "畫布與畫筆",
+      icon: <Palette className="w-8 h-8 text-indigo-500" />,
+      desc: "負責互動式視覺化呈現，將枯燥的數據轉化為直觀、易懂的儀表板與圖表。",
+      features: ["多源數據連接 (GA4, BigQuery)", "互動式動態控制項", "AI 增強型自動建圖"],
+      link: "https://lookerstudio.google.com/",
+      color: "border-indigo-200 bg-indigo-50"
+    },
+    {
+      name: "Google Opal",
+      role: "自動化引擎",
+      icon: <Cpu className="w-8 h-8 text-purple-500" />,
+      desc: "實驗性的無程式碼 AI 應用構建工具，負責串接複雜的 AI 工作流，實現數據處理自動化。",
+      features: ["無程式碼 AI 工作流串接", "自動化數據清洗與格式化", "多模型協同分析"],
+      link: "https://cloud.google.com/products/ai",
+      color: "border-purple-200 bg-purple-50"
+    }
+  ];
+
+  const deploymentSteps = [
+    {
+      id: "deploy-1",
+      title: "AI Studio：定義核心邏輯",
+      icon: <Layout className="w-8 h-8 text-blue-500" />,
+      desc: "利用直覺的介面，設計 AI 的溝通模式與分析邏輯。",
+      details: [
+        "使用自然語言對話，無需學習任何程式語法。",
+        "定義 AI 的專家角色（如：資深數據策略師）。",
+        "設定數據處理的關鍵指令（Prompts）。",
+        "即時預覽並微調分析結果的專業度。"
+      ],
+      link: "https://aistudio.google.com/",
+      actionText: "進入設計環境"
+    },
+    {
+      id: "deploy-2",
+      title: "GitHub：專案雲端備份",
+      icon: <Github className="w-8 h-8 text-slate-800" />,
+      desc: "將您的分析邏輯與網頁資產安全地存放在雲端空間。",
+      details: [
+        "建立個人的數位代碼倉庫。",
+        "透過拖拽或簡單指令同步您的最新設計。",
+        "實現「版本控制」，隨時找回之前的設計。",
+        "讓您的工作流程具備企業級的穩定度。"
+      ],
+      link: "https://github.com/",
+      actionText: "前往雲端庫"
+    },
+    {
+      id: "deploy-3",
+      title: "Vercel：一鍵發佈網站",
+      icon: <Rocket className="w-8 h-8 text-blue-600" />,
+      desc: "將您的設計轉化為正式網址，實現全網訪問。",
+      details: [
+        "關聯 GitHub 帳號，實現自動化發佈同步。",
+        "Vercel 會自動為您生成專業的專案網址。",
+        "免去所有複雜的伺服器與主機設定。",
+        "只要 GitHub 更新，您的網站也會即時變動。"
+      ],
+      link: "https://vercel.com/",
+      actionText: "發佈您的網站"
+    }
+  ];
 
   const visualizationValues = [
     {
@@ -68,7 +166,7 @@ const App: React.FC = () => {
           nameEn: "Identification",
           icon: <Search className="w-5 h-5" />, 
           desc: "快速區分特徵",
-          fullDesc: "簡化後的視覺標示，去除不必要的雜訊，讓受眾能瞬間辨識核心特徵。",
+          fullDesc: "簡化視覺特徵能減少受眾的心理距離，讓讀者更容易將注意力集中在關鍵特徵上。",
           prompt: "Professional infographic for 'Identification'."
         },
         { 
@@ -86,7 +184,7 @@ const App: React.FC = () => {
           desc: "精準傳達訊息",
           fullDesc: "視覺化能同時呈現相對位置與空間邏輯，傳遞純文字難以表達的精確資訊。",
           prompt: "Professional technical diagram for 'Accuracy'."
-        },
+        }
       ]
     },
     {
@@ -106,15 +204,15 @@ const App: React.FC = () => {
           nameEn: "Interaction",
           icon: <Users className="w-5 h-5" />, 
           desc: "增加受眾參與",
-          fullDesc: "善用視覺引導與對位，營造出與受眾對話的互動感，引發參與動機。",
-          prompt: "Professional UI concept for 'Interaction'."
+          fullDesc: "互動式元件能引導受眾探索數據，從被動接收資訊轉為主動挖掘價值。",
+          prompt: "Interactive data UI concept."
         },
         { 
           name: "順序", 
           nameEn: "Sequence",
           icon: <ListOrdered className="w-5 h-5" />, 
           desc: "建立邏輯層級",
-          fullDesc: "視覺化能精確排列步驟與發展路徑，讓受眾順暢地理解事情的先後順序。",
+          fullDesc: "視覺化能精確排列步驟與發展路徑，讓受眾順暢地理解事情的先後順序與因果關係。",
           prompt: "Professional flowchart for 'Sequence'."
         },
         { 
@@ -122,48 +220,8 @@ const App: React.FC = () => {
           nameEn: "Rhythm",
           icon: <Activity className="w-5 h-5" />, 
           desc: "掌控故事節奏",
-          fullDesc: "透過比例與留白的調節，視覺化能控制資訊釋放的速度，巧妙拿捏敘事的節奏感。",
-          prompt: "Professional storyboard for 'Rhythm'."
-        },
-      ]
-    }
-  ];
-
-  const tutorialPrompts = [
-    {
-      category: "GA4 決策核心 (老闆最關心的經營指標)",
-      icon: <Briefcase className="w-6 h-6" />,
-      prompts: [
-        { 
-          title: "轉換率跌幅深度診斷", 
-          content: "你是一位資深數位行銷長 (CMO)。老闆想知道：『為什麼上個月廣告投這麼多，但轉化率 (CR) 卻下降了？』請分析這份 GA4 流量數據，比對廣告付費流量與自然流量的轉化率差異。請以『對比表格』呈現，並給出三個針對『廣告著陸頁優化』的具體行動建議。", 
-          description: "分析核心業績問題，提供具備商業邏輯的技術優化策略。" 
-        },
-        { 
-          title: "預算分配與 ROAS 優化", 
-          content: "你是一位電商數據顧問。請根據 GA4 通路分組數據，分析各通路 (Meta, Google, Direct) 的營收貢獻與客單價 (AOV)。請以『Executive Summary』格式輸出，明確建議老闆下個月該增加哪個通路的預算，並用數據支持你的理由。", 
-          description: "直接面對經營者對錢花在哪裡的焦慮，提供具決策價值的摘要。" 
-        },
-        { 
-          title: "高價值客群行為路徑", 
-          content: "你是一位 CRM 專家。老闆關心：『誰是我們的死忠客戶？』請分析 GA4 的『回訪者數據』。請以『數據說故事』的方式撰寫，描述高價值客群的行為路徑特徵，並建議一套針對這群人的『視覺化再行銷廣告』策略。", 
-          description: "從冷冰冰的數據中提煉出人的行為軌跡，制定精準行銷計畫。" 
-        }
-      ]
-    },
-    {
-      category: "數據敘事與視覺化實作",
-      icon: <Wand2 className="w-6 h-6" />,
-      prompts: [
-        { 
-          title: "五分鐘決策報告大綱", 
-          content: "你是一位頂尖的 BI 專家。請根據數據，為我設計一份『給老闆的五分鐘極簡決策報表』。要求：首頁包含三個關鍵 KPI 卡片建議，接下來兩頁分別說明『獲客』與『轉換』的異常點，最後一頁是決策清單。", 
-          description: "建立高效率的結構化敘事，提升報告的說服力。" 
-        },
-        { 
-          title: "視覺原則優化清單", 
-          content: "你是一位資深 UI/UX 設計顧問。這張 GA4 漏斗圖太複雜，請建議如何運用視覺化八大價值中的『效率』與『順序』原則進行簡化。請列出具體的『修改步驟清單』，目標是讓老闆一看就懂流失點。", 
-          description: "優化資訊層級，減少決策者的認知負擔。" 
+          fullDesc: "透過視覺元素的疏密排列，能控制資訊釋放的節奏，增強敘事的效果與記憶點。",
+          prompt: "Information rhythm abstract visualization."
         }
       ]
     }
@@ -193,13 +251,25 @@ const App: React.FC = () => {
           <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200">
             <button 
               onClick={() => setActiveTab('dashboard')}
-              className={`px-5 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'dashboard' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'dashboard' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
             >
-              數據儀表板
+              儀表板
+            </button>
+            <button 
+              onClick={() => setActiveTab('ecosystem')}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'ecosystem' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              軟體介紹
+            </button>
+            <button 
+              onClick={() => setActiveTab('deployment')}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'deployment' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              部署教學
             </button>
             <button 
               onClick={() => setActiveTab('tutorial')}
-              className={`px-5 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'tutorial' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'tutorial' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
             >
               提示詞教材
             </button>
@@ -214,26 +284,33 @@ const App: React.FC = () => {
             <section className="bg-white rounded-[3rem] p-10 md:p-16 border border-slate-200 shadow-sm overflow-hidden relative">
               <div className="relative z-10 max-w-2xl">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-600 text-xs font-black rounded-full mb-6 uppercase tracking-[0.2em] border border-blue-100">
-                  <Monitor size={14} /> Enterprise BI Hub
+                  <Monitor size={14} /> AI Data Visualization
                 </div>
                 <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] mb-8">
-                  精準視覺化：<br/><span className="text-blue-600">讓數據為決策說話</span>
+                  從洞察到簡報的<br/><span className="text-blue-600">自動化之路</span>
                 </h2>
                 <div className="space-y-5 mb-10">
                   <p className="text-slate-700 font-bold text-xl leading-relaxed">
-                    本系統整合 GA4 關鍵經營指標，將繁雜的統計數字轉化為直觀、具備影響力的經營洞察。
+                    掌握 Gemini + Looker Studio + Google Opal，打造圖文並茂的專業報告。
                   </p>
                   <p className="text-slate-500 text-lg leading-relaxed">
-                    不論是轉化率跌幅分析或是通路獲利評估，透過視覺化科學原則，您能產出讓老闆一看就懂、能立即拍板的數據報告。
+                    透過視覺化科學原則，將複雜數據轉化為老闆一看就懂、能立即拍板的經營決策。
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-4">
                   <button 
-                    onClick={() => setActiveTab('tutorial')}
+                    onClick={() => setActiveTab('ecosystem')}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-[2rem] font-black flex items-center gap-3 transition-all shadow-2xl shadow-blue-200 active:scale-95 group"
                   >
-                    <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                    進入企業決策教材
+                    <Settings2 className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                    探索軟體生態系
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('deployment')}
+                    className="bg-white border-2 border-slate-200 text-slate-800 px-10 py-5 rounded-[2rem] font-black flex items-center gap-3 hover:border-blue-300 hover:bg-blue-50 transition-all active:scale-95"
+                  >
+                    <Rocket className="w-5 h-5" />
+                    學習部署流程
                   </button>
                 </div>
               </div>
@@ -284,6 +361,118 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+        ) : activeTab === 'ecosystem' ? (
+          <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <section className="text-center max-w-3xl mx-auto space-y-6">
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900">AI 數據視覺化工具生態系</h2>
+              <p className="text-slate-500 text-xl leading-relaxed font-medium">
+                協同工作流：將 Gemini 的智慧分析、Looker Studio 的畫布表現與 Opal 的自動化引擎完美結合。
+              </p>
+            </section>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {softwareEcosystem.map((sw, idx) => (
+                <div key={idx} className={`rounded-[2.5rem] border-2 p-10 flex flex-col ${sw.color} transition-all hover:shadow-xl group`}>
+                  <div className="bg-white w-16 h-16 rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                    {sw.icon}
+                  </div>
+                  <h3 className="text-3xl font-black text-slate-900 mb-2">{sw.name}</h3>
+                  <div className="text-blue-600 font-black text-sm uppercase tracking-widest mb-6">{sw.role}</div>
+                  <p className="text-slate-600 font-bold text-lg leading-relaxed mb-8 flex-grow">
+                    {sw.desc}
+                  </p>
+                  <ul className="space-y-4 mb-10">
+                    {sw.features.map((f, i) => (
+                      <li key={i} className="flex items-center gap-3 text-slate-500 font-bold">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <a 
+                    href={sw.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bg-slate-900 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2 hover:bg-slate-800 transition-all active:scale-95"
+                  >
+                    前往官網 <ExternalLink size={18} />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : activeTab === 'deployment' ? (
+          <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <section className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-white overflow-hidden relative shadow-2xl">
+              <div className="relative z-10 text-center max-w-4xl mx-auto">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-600/20 text-blue-400 text-xs font-black rounded-full mb-8 border border-blue-600/30 uppercase tracking-[0.2em]">
+                  <Globe size={14} /> Zero Threshold Launch
+                </div>
+                <h2 className="text-4xl md:text-6xl font-black mb-8">零門檻：從 AI 設計到網站發佈</h2>
+                <p className="text-slate-400 text-xl leading-relaxed font-medium">
+                  不需要 API KEY 或繁瑣的技術門檻。本流程專為非技術人員設計，透過自動化工具，讓您的數據應用在幾分鐘內完成上線。
+                </p>
+              </div>
+              <Cloud className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] text-blue-900 opacity-20 pointer-events-none" />
+            </section>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {deploymentSteps.map((step, idx) => (
+                <div key={idx} className="bg-white rounded-[3rem] border border-slate-200 p-10 shadow-sm hover:shadow-xl transition-all group relative flex flex-col">
+                  <div className="bg-slate-50 w-20 h-20 rounded-3xl flex items-center justify-center mb-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                    {step.icon}
+                  </div>
+                  <h3 className="text-2xl font-black text-slate-900 mb-4">{step.title}</h3>
+                  <p className="text-slate-500 font-bold mb-10">{step.desc}</p>
+                  
+                  <div className="space-y-6 mb-12 flex-grow">
+                    {step.details.map((detail, dIdx) => (
+                      <div key={dIdx} className="flex gap-4">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black flex items-center justify-center border border-blue-100">
+                          {dIdx + 1}
+                        </div>
+                        <p className="text-slate-600 text-sm font-semibold leading-relaxed">{detail}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <a 
+                    href={step.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-5 rounded-2xl bg-slate-900 text-white font-black flex items-center justify-center gap-2 hover:bg-blue-600 transition-all active:scale-95 shadow-lg"
+                  >
+                    {step.actionText} <ExternalLink size={18} />
+                  </a>
+                </div>
+              ))}
+            </div>
+
+            <section className="bg-blue-600 rounded-[3rem] p-12 md:p-16 text-white text-center shadow-2xl relative overflow-hidden">
+              <div className="relative z-10">
+                <h3 className="text-3xl font-black mb-6">為什麼選擇自動化部署？</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                  <div className="p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                    <Zap className="w-8 h-8 mb-4 mx-auto" />
+                    <h4 className="font-black mb-2">免設定環境</h4>
+                    <p className="text-sm opacity-80">自動處理所有網路與主機設定，專注於內容創作。</p>
+                  </div>
+                  <div className="p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                    <Monitor className="w-8 h-8 mb-4 mx-auto" />
+                    <h4 className="font-black mb-2">永久免費空間</h4>
+                    <p className="text-sm opacity-80">Vercel 與 GitHub 提供強大的免費方案，適合個人專案。</p>
+                  </div>
+                  <div className="p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                    {/* Fix: Added missing RefreshCw icon import */}
+                    <RefreshCw className="w-8 h-8 mb-4 mx-auto" />
+                    <h4 className="font-black mb-2">更新即時生效</h4>
+                    <p className="text-sm opacity-80">修改代碼 or 邏輯後，網站會在數秒內自動完成更新。</p>
+                  </div>
+                </div>
+              </div>
+              <Sparkles className="absolute top-10 left-10 text-white/10 w-32 h-32" />
+            </section>
+          </div>
         ) : (
           <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <section className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-white overflow-hidden relative shadow-2xl">
@@ -292,7 +481,7 @@ const App: React.FC = () => {
                   <div className="p-4 bg-blue-600 rounded-[1.5rem] shadow-xl shadow-blue-900/40">
                     <Briefcase className="w-10 h-10" />
                   </div>
-                  <h2 className="text-4xl md:text-5xl font-black">GA4 企業實戰教材</h2>
+                  <h2 className="text-4xl md:text-5xl font-black">GA4 企業實戰提示詞</h2>
                 </div>
                 <p className="text-slate-400 text-xl max-w-3xl leading-relaxed font-medium">
                   老闆不在乎數據有多少，他在乎數據能帶來多少業績。複製下方的「老闆導向提示詞」，學習如何將 GA4 轉化為能拍板的經營決策。
@@ -301,65 +490,36 @@ const App: React.FC = () => {
               <Activity className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] text-blue-900 opacity-20 pointer-events-none" />
             </section>
 
-            <div className="grid grid-cols-1 gap-14">
-              {tutorialPrompts.map((section, idx) => (
-                <div key={idx} className="space-y-8">
-                  <div className="flex items-center gap-5 px-6">
-                    <div className="w-14 h-14 bg-white border border-slate-200 shadow-sm rounded-2xl flex items-center justify-center text-blue-600">
-                      {section.icon}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {tutorialPrompts[0].prompts.map((p, pIdx) => {
+                const id = `prompt-0-${pIdx}`;
+                return (
+                  <div key={pIdx} className="bg-white rounded-[2.5rem] border border-slate-200 p-10 shadow-sm hover:shadow-xl transition-all flex flex-col group relative">
+                    <h4 className="font-black text-2xl mb-4 text-slate-900 flex items-center justify-between">
+                      {p.title}
+                      <MousePointer2 size={18} className="text-slate-200 group-hover:text-blue-600 transition-colors" />
+                    </h4>
+                    <p className="text-slate-500 text-sm mb-8 flex-grow leading-relaxed font-bold">{p.description}</p>
+                    
+                    <div className="bg-slate-50 rounded-[2rem] p-6 mb-8 border border-slate-100 relative group/box overflow-hidden max-h-56 overflow-y-auto custom-scrollbar">
+                      <code className="text-slate-700 text-sm leading-relaxed block pr-4 whitespace-pre-wrap font-mono">
+                        "{p.content}"
+                      </code>
                     </div>
-                    <h3 className="text-3xl font-black text-slate-800">{section.category}</h3>
+                    
+                    <button 
+                      onClick={() => handleCopy(p.content, id)}
+                      className={`w-full py-5 rounded-2xl font-black flex items-center justify-center gap-3 transition-all active:scale-95 shadow-md ${copiedId === id ? 'bg-emerald-500 text-white shadow-emerald-100' : 'bg-slate-100 text-slate-700 hover:bg-blue-600 hover:text-white hover:shadow-blue-200'}`}
+                    >
+                      {copiedId === id ? (
+                        <><CheckCircle2 size={20} /> 已複製到剪貼簿</>
+                      ) : (
+                        <><Copy size={20} /> 複製提示詞</>
+                      )}
+                    </button>
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {section.prompts.map((p, pIdx) => {
-                      const id = `prompt-${idx}-${pIdx}`;
-                      return (
-                        <div key={pIdx} className="bg-white rounded-[2.5rem] border border-slate-200 p-10 shadow-sm hover:shadow-xl transition-all flex flex-col group relative">
-                          <h4 className="font-black text-2xl mb-4 text-slate-900 flex items-center justify-between">
-                            {p.title}
-                            <MousePointer2 size={18} className="text-slate-200 group-hover:text-blue-600 transition-colors" />
-                          </h4>
-                          <p className="text-slate-500 text-sm mb-8 flex-grow leading-relaxed font-bold">{p.description}</p>
-                          
-                          <div className="bg-slate-50 rounded-[2rem] p-6 mb-8 border border-slate-100 relative group/box overflow-hidden max-h-56 overflow-y-auto custom-scrollbar">
-                            <code className="text-slate-700 text-sm leading-relaxed block pr-4 whitespace-pre-wrap font-mono">
-                              "{p.content}"
-                            </code>
-                          </div>
-                          
-                          <button 
-                            onClick={() => handleCopy(p.content, id)}
-                            className={`w-full py-5 rounded-2xl font-black flex items-center justify-center gap-3 transition-all active:scale-95 shadow-md ${copiedId === id ? 'bg-emerald-500 text-white shadow-emerald-100' : 'bg-slate-100 text-slate-700 hover:bg-blue-600 hover:text-white hover:shadow-blue-200'}`}
-                          >
-                            {copiedId === id ? (
-                              <><CheckCircle2 size={20} /> 已複製到剪貼簿</>
-                            ) : (
-                              <><Copy size={20} /> 複製關鍵提示詞</>
-                            )}
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-amber-50 rounded-[3rem] p-12 border border-amber-100 flex flex-col md:flex-row items-center gap-10 shadow-sm">
-              <div className="p-8 bg-white rounded-[2.5rem] shadow-xl shadow-amber-900/5 border border-amber-100 shrink-0">
-                <div className="w-20 h-20 bg-amber-500 rounded-[2rem] flex items-center justify-center text-white shadow-lg shadow-amber-200">
-                  <Zap size={44} />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-amber-900 mb-4 flex items-center gap-3">
-                  老闆的溝通協議 (Boss Communication Protocol)
-                </h3>
-                <p className="text-amber-800/80 text-xl leading-relaxed max-w-2xl font-bold">
-                  面對高階經營者，永遠先講「具備業績衝擊力」的結論。教材中的提示詞已內建此邏輯，配合視覺化原則，能大幅縮短老闆理解數據的時間。
-                </p>
-              </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -398,7 +558,7 @@ const App: React.FC = () => {
       {/* 底部作者資訊列 */}
       <footer className="max-w-6xl mx-auto px-4 mt-12 mb-8 flex justify-center border-t border-slate-200 pt-8">
         <div className="flex items-center gap-4 text-slate-400">
-          <span className="text-xs font-black uppercase tracking-[0.4em]">GA4 企業實戰模式</span>
+          <span className="text-xs font-black uppercase tracking-[0.4em]">AI 數據視覺化自動化之路</span>
           <div className="w-1.5 h-1.5 bg-slate-200 rounded-full"></div>
           <span className="text-sm font-bold text-slate-500">由 馮淑萍 主講 | 視覺影響力策略師</span>
         </div>
