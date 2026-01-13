@@ -1,0 +1,7 @@
+{
+  "name": "視覺影響力 Pro",
+  "description": "展示視覺傳播科學的高效能數據儀表板，並具備由 Gemini 2.5 Flash Image 驅動的 AI 資訊圖表生成器。",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
