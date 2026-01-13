@@ -33,7 +33,11 @@ import {
   Code2,
   Cloud,
   Layout,
-  RefreshCw
+  RefreshCw,
+  FileText,
+  PieChart,
+  Dices,
+  Info
 } from 'lucide-react';
 
 interface VisualizationItem {
@@ -68,8 +72,40 @@ const tutorialPrompts = [
   }
 ];
 
+const caseStudyData = {
+  title: "首次報稅懶人包",
+  subtitle: "新手報稅不求人：從準備到繳費的全方位圖解案例",
+  description: "針對「首次報稅」這個高搜尋量、高痛點的題目，我們設計了三種不同風格的視覺提示詞。這些提示詞特別優化了 16:9 的橫向構圖，適合用於網站橫幅 (Banner)、YouTube 封面或專業簡報。",
+  styles: [
+    {
+      id: "case-1",
+      title: "極簡商務 (Minimalist)",
+      icon: <Layout className="w-6 h-6" />,
+      tag: "適合：企業官網、專業報表",
+      prompt: "Professional 16:9 horizontal infographic for 'First-time Tax Filing Guide'. Minimalist flat design, corporate blue and white theme. Clear geometric sections for 'Preparation', 'Reporting', and 'Payment'. Ultra-high 4K resolution, vector style, clean sans-serif typography, sophisticated business aesthetic, plenty of white space.",
+      highlights: ["比例 16:9", "極簡扁平化設計", "4K 高解析度", "商務藍白配色"]
+    },
+    {
+      id: "case-2",
+      title: "現代波普 (Modern Pop)",
+      icon: <Palette className="w-6 h-6" />,
+      tag: "適合：社群媒體、行銷懶人包",
+      prompt: "Vibrant 16:9 horizontal digital illustration for 'Tax Filing for Beginners'. Modern pop art style with bold gradients and bright colors (yellow, teal, coral). Playful icons of digital documents, smartphones, and golden coins. High definition, engaging visual hierarchy, 16:9 aspect ratio, trendy 2D vector art.",
+      highlights: ["比例 16:9", "鮮豔波普風格", "高飽和度漸層", "趣味扁平化圖示"]
+    },
+    {
+      id: "case-3",
+      title: "專業技術圖解 (Technical)",
+      icon: <PieChart className="w-6 h-6" />,
+      tag: "適合：技術文檔、深度教學",
+      prompt: "Detailed 16:9 horizontal technical flowchart for 'Annual Tax Return Process'. Professional isometric 3D illustration style, sophisticated slate grey and navy background. Precise data nodes connected by glowing lines. High resolution 4K, authoritative look, complex yet readable structure, clean rendering.",
+      highlights: ["比例 16:9", "等角投影 (Isometric)", "4K 高解析度", "專業深色質感"]
+    }
+  ]
+};
+
 const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tutorial' | 'ecosystem' | 'deployment'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'case-study' | 'tutorial' | 'ecosystem' | 'deployment'>('dashboard');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [selectedConcept, setSelectedConcept] = useState<VisualizationItem | null>(null);
 
@@ -248,28 +284,34 @@ const App: React.FC = () => {
             </div>
             <h1 className="text-xl font-black tracking-tight">視覺影響力 <span className="text-blue-600 font-extrabold">Pro</span></h1>
           </div>
-          <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200">
+          <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 overflow-x-auto">
             <button 
               onClick={() => setActiveTab('dashboard')}
-              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'dashboard' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${activeTab === 'dashboard' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
             >
               儀表板
             </button>
             <button 
+              onClick={() => setActiveTab('case-study')}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${activeTab === 'case-study' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              實戰案例
+            </button>
+            <button 
               onClick={() => setActiveTab('ecosystem')}
-              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'ecosystem' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${activeTab === 'ecosystem' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
             >
               軟體介紹
             </button>
             <button 
               onClick={() => setActiveTab('deployment')}
-              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'deployment' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${activeTab === 'deployment' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
             >
               部署教學
             </button>
             <button 
               onClick={() => setActiveTab('tutorial')}
-              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${activeTab === 'tutorial' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${activeTab === 'tutorial' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
             >
               提示詞教材
             </button>
@@ -299,11 +341,11 @@ const App: React.FC = () => {
                 </div>
                 <div className="flex flex-wrap gap-4">
                   <button 
-                    onClick={() => setActiveTab('ecosystem')}
+                    onClick={() => setActiveTab('case-study')}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-[2rem] font-black flex items-center gap-3 transition-all shadow-2xl shadow-blue-200 active:scale-95 group"
                   >
-                    <Settings2 className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-                    探索軟體生態系
+                    <Presentation className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    查看實戰案例
                   </button>
                   <button 
                     onClick={() => setActiveTab('deployment')}
@@ -359,6 +401,80 @@ const App: React.FC = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        ) : activeTab === 'case-study' ? (
+          <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <section className="bg-white rounded-[3rem] p-12 md:p-20 border border-slate-200 shadow-sm relative overflow-hidden">
+              <div className="relative z-10 max-w-4xl">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs font-black rounded-full mb-8 border border-emerald-100 uppercase tracking-[0.2em]">
+                  <FileText size={14} /> Case Study Case-01
+                </div>
+                <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">{caseStudyData.title}</h2>
+                <h3 className="text-2xl font-bold text-blue-600 mb-8">{caseStudyData.subtitle}</h3>
+                <p className="text-slate-500 text-xl leading-relaxed font-medium mb-12">
+                  {caseStudyData.description}
+                </p>
+                <div className="flex items-center gap-4 text-slate-400 font-black text-xs uppercase tracking-widest">
+                  <div className="flex items-center gap-1"><Monitor size={14}/> Optimized for 16:9</div>
+                  <div className="w-1 h-1 bg-slate-200 rounded-full"></div>
+                  <div className="flex items-center gap-1"><Sparkles size={14}/> AI-Driven Styles</div>
+                </div>
+              </div>
+              <div className="absolute top-[-10%] right-[-10%] opacity-5 pointer-events-none">
+                <Dices size={400} />
+              </div>
+            </section>
+
+            <div className="grid grid-cols-1 gap-12">
+              {caseStudyData.styles.map((style, idx) => (
+                <div key={style.id} className="bg-white rounded-[3rem] border border-slate-200 p-8 md:p-12 shadow-sm hover:shadow-xl transition-all group flex flex-col lg:flex-row gap-12">
+                  <div className="lg:w-1/3">
+                    <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-sm">
+                      {style.icon}
+                    </div>
+                    <h4 className="text-3xl font-black text-slate-900 mb-4">{style.title}</h4>
+                    <p className="text-blue-600 font-black text-sm mb-8">{style.tag}</p>
+                    
+                    <div className="space-y-3">
+                      {style.highlights.map((h, hIdx) => (
+                        <div key={hIdx} className="flex items-center gap-2 text-slate-500 font-bold text-sm">
+                          <CheckCircle2 size={16} className="text-emerald-500" /> {h}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="lg:w-2/3 flex flex-col">
+                    <div className="bg-slate-50 rounded-[2.5rem] p-8 mb-8 border border-slate-100 relative overflow-hidden flex-grow flex flex-col">
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="text-xs font-black text-slate-400 uppercase tracking-widest">AI Prompt (16:9 High-Res)</span>
+                        <div className="flex gap-2">
+                          <span className="px-2 py-1 bg-white text-slate-400 text-[10px] rounded border border-slate-100 font-black uppercase">Aspect Ratio: 16:9</span>
+                          <span className="px-2 py-1 bg-white text-slate-400 text-[10px] rounded border border-slate-100 font-black uppercase">Res: 4K/HD</span>
+                        </div>
+                      </div>
+                      <code className="text-slate-700 text-lg leading-relaxed block font-mono italic mb-8 flex-grow">
+                        "{style.prompt}"
+                      </code>
+                      
+                      <button 
+                        onClick={() => handleCopy(style.prompt, style.id)}
+                        className={`w-full py-5 rounded-2xl font-black flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg ${copiedId === style.id ? 'bg-emerald-500 text-white shadow-emerald-100' : 'bg-slate-900 text-white hover:bg-blue-600'}`}
+                      >
+                        {copiedId === style.id ? (
+                          <><CheckCircle2 size={24} /> 提示詞已複製！</>
+                        ) : (
+                          <><Copy size={24} /> 複製高解析度提示詞</>
+                        )}
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400 text-xs font-bold italic">
+                      <Info size={14} /> 小提示：建議使用 Gemini 2.5 Flash 或 Pro 模型進行繪圖，並確保在設定中勾選 16:9 比例。
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         ) : activeTab === 'ecosystem' ? (
@@ -463,7 +579,6 @@ const App: React.FC = () => {
                     <p className="text-sm opacity-80">Vercel 與 GitHub 提供強大的免費方案，適合個人專案。</p>
                   </div>
                   <div className="p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
-                    {/* Fix: Added missing RefreshCw icon import */}
                     <RefreshCw className="w-8 h-8 mb-4 mx-auto" />
                     <h4 className="font-black mb-2">更新即時生效</h4>
                     <p className="text-sm opacity-80">修改代碼 or 邏輯後，網站會在數秒內自動完成更新。</p>
